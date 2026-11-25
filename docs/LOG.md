@@ -91,3 +91,16 @@ Metres driven per sol by northern-hemisphere season, from the route files alone:
   - `NLF_2023_0846524621_762EBY_N0930000SCAM01023_00_0LLJ`: scattered loose rocks.
 
   All four are readable terrain. Pointing at about −25° shows ground texture well, but outcrops further away less so. That trade-off should be checked with the hand labels.
+
+## 2026-11-25: Hand-labelling page
+
+- **One source of wording:** `marsmon/questions.py` holds every question (version `terrain-v1`). The labelling page reads its definitions from there, and the Jev requests will too, so a person and the model see the same criteria. Four questions:
+  - `ground_visible` (Noul): the null case, e.g. frames of sky or rover hardware.
+  - `main_terrain` (Choice of five).
+  - `layering` (Noul).
+  - `steep_slope` (Noul).
+- **Labels stay blind:** the page shows only the frame, with no sol, place, season, Jev answer or Claude suggestion. Each answer goes to `data/labels/terrain_labels.json`, which only the page's server writes, one entry at a time.
+- **Sample:** `marsmon/label_sample.py` splits the route into 10 equal stretches of distance and draws 15 frames from each with a fixed seed. Frames are shown shuffled. The sample file is committed and the script refuses to overwrite it.
+- **Testing on a 20-frame scratch sample found two problems:**
+  - **Fast typing landed on the wrong frame.** Keys pressed while a save was in flight went to the previous frame. The page now moves on at once and goes back with an error if the save fails.
+  - **One picked frame showed the rover's deck, not the ground.** Frame `NLF_1815_0828058476_612ECM_N0871640NCAM02814_07_195J`, mast azimuth −122°, elevation −25°. The picker now avoids frames aimed more than 100° off the rover's forward direction when another frame exists at that stop. Another frame at +118° showed open hillside, so azimuth alone isn't a clean rule. The `ground_visible` labels will show how often deck frames still slip through.

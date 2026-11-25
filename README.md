@@ -36,8 +36,12 @@ Python 3.10+ and the standard library only.
 python3 -m marsmon.ingest route --rover m20                 # route stops (also: --rover msl)
 python3 -m marsmon.ingest images --rover m20 --camera NAVCAM_LEFT
 python3 -m marsmon.select_terrain --rover m20                # one terrain frame per stop
+python3 -m marsmon.label_sample --rover m20 --n 150          # frames to label by hand (once)
+python3 -m marsmon.label_server                              # labelling page at http://127.0.0.1:8765
 python3 -m unittest discover tests
 ```
+
+The labelling page uses the keyboard: <kbd>Y</kbd>/<kbd>N</kbd>/<kbd>U</kbd> for yes, no and unsure, <kbd>1</kbd>–<kbd>5</kbd> for terrain, and <kbd>Enter</kbd> to save and go to the next frame. Answers are saved to `data/labels/terrain_labels.json` as you go, so you can stop and come back.
 
 The local database (`data/marsmon.sqlite`) is rebuilt from the feeds and not committed. Small derived tables in `data/derived/` are committed.
 

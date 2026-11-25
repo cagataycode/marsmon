@@ -7,7 +7,10 @@ Rules (all in code, so they can be read and changed):
 - left Navcam, full 1280x960 frame (not a thumbnail or a horizon strip);
 - the camera points down at the ground ahead: mast elevation between -45 and -10 degrees;
 - among those, prefer about -25 degrees (near ground and some distance in one frame),
-  then a time near local noon (short shadows).
+  then a time near local noon (short shadows);
+- avoid frames aimed more than 100 degrees off the rover's forward direction when
+  another frame exists: looking back and down can show the rover's own deck instead
+  of the ground (seen in NLF_1815_0828058476_612ECM_N0871640NCAM02814_07_195J).
 
 Writes data/derived/<rover>_terrain_frames.csv and a review page with thumbnails.
 """
@@ -35,7 +38,10 @@ def _hours(lmst: str | None) -> float | None:
 def score(img) -> float:
     """Lower is better."""
     h = _hours(img["lmst"])
-    return abs(img["mast_el"] - EL_BEST) + (abs(h - 12.0) * 2 if h is not None else 12)
+    az = img["mast_az"]
+    looking_back = az is not None and abs(az) > 100
+    return (abs(img["mast_el"] - EL_BEST) + (abs(h - 12.0) * 2 if h is not None else 12)
+            + (1000 if looking_back else 0))
 
 
 def select(rover: str) -> list[dict]:

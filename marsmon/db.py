@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS stops (
 
 def connect(path: Path = DB_PATH) -> sqlite3.Connection:
     path.parent.mkdir(parents=True, exist_ok=True)
-    con = sqlite3.connect(path)
+    con = sqlite3.connect(path, timeout=60)  # several ingest ranges may write at once
     con.row_factory = sqlite3.Row
     con.executescript(SCHEMA)
     return con

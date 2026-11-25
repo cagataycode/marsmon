@@ -27,11 +27,12 @@ def _with_season(rec: dict) -> dict:
     return rec
 
 
-def ingest_images(rover: str, camera: str | None, recent: int | None = None, before_sol: int | None = None) -> int:
+def ingest_images(rover: str, camera: str | None, recent: int | None = None, before_sol: int | None = None,
+                  from_sol: int | None = None) -> int:
     if rover != "m20":
         raise SystemExit("Only Perseverance (m20) images are wired up so far.")
     con = db.connect()
-    sol_min = None
+    sol_min = from_sol
     if recent is not None:
         row = con.execute("SELECT MAX(sol) FROM images WHERE rover=? AND (? IS NULL OR camera=?)", (rover, camera, camera)).fetchone()
         sol_min = (row[0] or 0) - recent
@@ -77,11 +78,12 @@ def main(argv=None):
     i.add_argument("--camera", help="instrument name, e.g. NAVCAM_LEFT, FRONT_HAZCAM_LEFT_A, SKYCAM")
     i.add_argument("--recent", type=int, help="only re-pull this many sols back from the newest stored")
     i.add_argument("--before-sol", type=int, help="only pull sols up to this one (to resume an interrupted pull)")
+    i.add_argument("--from-sol", type=int, help="only pull sols from this one on (to split a long pull into ranges)")
     a = ap.parse_args(argv)
     if a.what == "route":
         print(f"{ingest_route(a.rover)} stops stored for {a.rover}")
     else:
-        print(f"{ingest_images(a.rover, a.camera, a.recent, a.before_sol)} image records stored for {a.rover} {a.camera or 'all cameras'}")
+        print(f"{ingest_images(a.rover, a.camera, a.recent, a.before_sol, a.from_sol)} image records stored for {a.rover} {a.camera or 'all cameras'}")
 
 
 if __name__ == "__main__":

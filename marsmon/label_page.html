@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MarsMon · terrain labels</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f6f3; --panel: #ffffff; --fg: #1f1e1c; --muted: #6d6a65; --line: #e2dfd9;
+    --accent: #b4502a; --accent-soft: #f6e4dc; --ok: #2f7d4f; --err: #b3261e; --kbd: #efede8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #141312; --panel: #1d1c1a; --fg: #ecebe8; --muted: #a29f99; --line: #33312e;
+            --accent: #e0825b; --accent-soft: #3a2a22; --ok: #6cc08e; --err: #f2867d; --kbd: #2a2926; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 system-ui, -apple-system, sans-serif; }
+  header { display: flex; align-items: center; gap: 16px; padding: 10px 20px; border-bottom: 1px solid var(--line); background: var(--panel); }
+  header h1 { font-size: 15px; margin: 0; font-weight: 600; }
+  header .progress { flex: 1; display: flex; align-items: center; gap: 10px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .bar { flex: 0 1 240px; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+  .bar > div { height: 100%; background: var(--accent); width: 0; transition: width .2s; }
+  header nav { display: flex; gap: 6px; }
+  button { font: inherit; color: inherit; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+  button:hover { border-color: var(--muted); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  main { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 0; height: calc(100vh - 49px); }
+  .viewer { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; gap: 8px; min-height: 0; }
+  .viewer img { max-width: 100%; max-height: calc(100vh - 120px); object-fit: contain; border-radius: 4px; background: #000; }
+  .viewer .meta { color: var(--muted); font-size: 12px; display: flex; gap: 14px; font-variant-numeric: tabular-nums; }
+  .viewer a { color: var(--muted); }
+  aside { border-left: 1px solid var(--line); background: var(--panel); overflow-y: auto; padding: 14px 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .q { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  .q.current { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+  .q.disabled { opacity: .45; }
+  .q h2 { font-size: 13.5px; margin: 0 0 8px; font-weight: 600; }
+  .opts { display: flex; flex-direction: column; gap: 5px; }
+  .opt { display: grid; grid-template-columns: 22px 1fr; gap: 8px; text-align: left; padding: 6px 8px; align-items: start; }
+  .opt kbd { font: 11px/18px ui-monospace, monospace; background: var(--kbd); border: 1px solid var(--line); border-radius: 4px; text-align: center; height: 20px; }
+  .opt b { font-weight: 600; display: block; }
+  .opt span { color: var(--muted); font-size: 12.5px; }
+  .opt.selected { background: var(--accent-soft); border-color: var(--accent); }
+  .opt:disabled { cursor: default; }
+  textarea { width: 100%; min-height: 54px; font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; resize: vertical; }
+  .save { display: flex; align-items: center; gap: 10px; }
+  .save button { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; padding: 7px 14px; }
+  .save button:disabled { opacity: .5; cursor: default; }
+  .status { font-size: 12.5px; color: var(--muted); }
+  .status.ok { color: var(--ok); } .status.err { color: var(--err); }
+  .help { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+  .help kbd { font: 11px ui-monospace, monospace; background: var(--kbd); border: 1px solid var(--line); border-radius: 3px; padding: 0 4px; }
+  .badge { font-size: 11.5px; padding: 1px 7px; border-radius: 10px; background: var(--kbd); color: var(--muted); }
+  .badge.done { background: var(--accent-soft); color: var(--accent); }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; height: auto; } aside { border-left: 0; border-top: 1px solid var(--line); } }
+</style>
+</head>
+<body>
+<header>
+  <h1>MarsMon · terrain labels</h1>
+  <div class="progress"><div class="bar"><div id="bar"></div></div><span id="count">–</span></div>
+  <nav>
+    <button id="prev" title="Previous frame ([)">← Prev</button>
+    <button id="next" title="Next frame (])">Next →</button>
+    <button id="todo" title="Next unlabelled frame (\)">Next unlabelled</button>
+  </nav>
+</header>
+<main>
+  <section class="viewer">
+    <img id="img" alt="">
+    <div class="meta">
+      <span id="pos"></span><span id="badge" class="badge"></span>
+      <a id="nasa" target="_blank" rel="noopener">Open full size on NASA ↗</a>
+    </div>
+  </section>
+  <aside>
+    <div id="qs"></div>
+    <label class="q"><h2>Note (optional)</h2><textarea id="note" placeholder="Anything odd about this frame"></textarea></label>
+    <div class="save"><button id="save">Save &amp; next ↵</button><span id="status" class="status"></span></div>
+    <div class="help">
+      Answer the highlighted question with its keys; focus moves on by itself.
+      <kbd>Y</kbd> <kbd>N</kbd> <kbd>U</kbd> yes / no / unsure · <kbd>1</kbd>–<kbd>5</kbd> terrain ·
+      <kbd>⌫</kbd> back one question · <kbd>↵</kbd> save &amp; next · <kbd>[</kbd> <kbd>]</kbd> previous / next frame.
+      Answer from the picture alone. If two kinds of ground share the frame, pick the one covering more of it.
+    </div>
+  </aside>
+</main>
+<script>
+const S = { items: [], questions: [], needsGround: new Set(), labels: {}, i: 0, answers: {}, cur: 0 };
+const $ = (id) => document.getElementById(id);
+const plain = (t) => t.replace(/`photo`/g, "the photo");
+
+async function load() {
+  const r = await fetch("/api/state");
+  const d = await r.json();
+  S.items = d.sample.items; S.questions = d.questions; S.needsGround = new Set(d.needs_ground); S.labels = d.labels;
+  const first = S.items.findIndex((it) => !S.labels[it.imageid]);
+  show(first === -1 ? 0 : first);
+}
+
+function keysFor(q) {
+  if (q.kind === "noul") return [["y", "yes", "Yes", q.true], ["n", "no", "No", q.false], ["u", "unsure", "Unsure", "The picture doesn't settle it."]];
+  const ks = Object.entries(q.options).map(([name, desc], k) => [String(k + 1), name, name.replace(/_/g, " "), desc]);
+  return ks.concat([["u", "unsure", "Unsure", "None fits well, or I can't tell."]]);
+}
+
+function show(i) {
+  S.i = Math.max(0, Math.min(S.items.length - 1, i));
+  const it = S.items[S.i];
+  const saved = S.labels[it.imageid];
+  S.answers = saved ? { ...saved.answers } : {};
+  $("note").value = saved ? (saved.note || "") : "";
+  $("img").src = it.image_url; $("img").alt = "Navcam frame " + it.imageid;
+  $("nasa").href = it.nasa_page;
+  $("pos").textContent = `Frame ${S.i + 1} of ${S.items.length}`;
+  $("badge").textContent = saved ? "labelled" : "not labelled"; $("badge").className = "badge" + (saved ? " done" : "");
+  $("status").textContent = ""; $("status").className = "status";
+  S.cur = firstOpen();
+  render(); progress();
+}
+
+function disabled(q) { return S.needsGround.has(q.id) && S.answers.ground_visible === "no"; }
+function firstOpen() { const k = S.questions.findIndex((q) => !disabled(q) && !S.answers[q.id]); return k === -1 ? S.questions.length : k; }
+function complete() { return S.questions.every((q) => disabled(q) || S.answers[q.id]); }
+
+function render() {
+  const box = $("qs"); box.innerHTML = "";
+  S.questions.forEach((q, qi) => {
+    const off = disabled(q);
+    const card = document.createElement("div");
+    card.className = "q" + (qi === S.cur ? " current" : "") + (off ? " disabled" : "");
+    const h = document.createElement("h2"); h.textContent = `${qi + 1}. ${plain(q.text)}`; card.appendChild(h);
+    const opts = document.createElement("div"); opts.className = "opts";
+    keysFor(q).forEach(([key, value, label, desc]) => {
+      const b = document.createElement("button");
+      b.className = "opt" + (S.answers[q.id] === value ? " selected" : ""); b.disabled = off;
+      b.innerHTML = `<kbd>${key.toUpperCase()}</kbd><div><b></b><span></span></div>`;
+      b.querySelector("b").textContent = label; b.querySelector("span").textContent = desc;
+      b.onclick = () => answer(qi, value);
+      opts.appendChild(b);
+    });
+    card.appendChild(opts); box.appendChild(card);
+  });
+  $("save").disabled = !complete();
+}
+
+function answer(qi, value) {
+  const q = S.questions[qi];
+  S.answers[q.id] = value;
+  if (q.id === "ground_visible") {
+    S.questions.forEach((o) => { if (S.needsGround.has(o.id)) { if (value === "no") S.answers[o.id] = "n/a"; else if (S.answers[o.id] === "n/a") delete S.answers[o.id]; } });
+  }
+  S.cur = firstOpen(); render();
+}
+
+async function save() {
+  if (!complete()) return;
+  // Move on at once so fast typing lands on the next frame; go back if the save fails.
+  const at = S.i, it = S.items[at], before = S.labels[it.imageid];
+  const body = { imageid: it.imageid, answers: { ...S.answers }, note: $("note").value };
+  S.questions.forEach((q) => { if (disabled(q)) body.answers[q.id] = "n/a"; });
+  S.labels[it.imageid] = { answers: body.answers, note: body.note, pending: true };
+  progress();
+  const nxt = S.items.findIndex((x, k) => k > at && !S.labels[x.imageid]);
+  const wrap = S.items.findIndex((x) => !S.labels[x.imageid]);
+  const done = nxt === -1 && wrap === -1;
+  show(nxt !== -1 ? nxt : wrap !== -1 ? wrap : at);
+  let d;
+  try {
+    const r = await fetch("/api/label", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    d = await r.json();
+  } catch (e) { d = { ok: false, error: "Could not reach the label server. Is it still running?" }; }
+  if (!d.ok) {
+    if (before) S.labels[it.imageid] = before; else delete S.labels[it.imageid];
+    show(at); S.answers = body.answers; render(); progress();
+    $("status").textContent = "Not saved: " + d.error; $("status").className = "status err";
+    return;
+  }
+  S.labels[it.imageid] = d.entry;
+  progress();
+  if (S.i === at || done) { $("badge").textContent = "labelled"; $("badge").className = "badge done"; }
+  $("status").textContent = done ? "All frames labelled. Thank you!" : `Saved frame ${at + 1}.`;
+  $("status").className = "status ok";
+}
+
+function progress() {
+  const n = S.items.filter((it) => S.labels[it.imageid]).length;
+  $("count").textContent = `${n} of ${S.items.length} labelled`;
+  $("bar").style.width = (100 * n / Math.max(1, S.items.length)) + "%";
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "TEXTAREA") { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) save(); return; }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key.toLowerCase();
+  if (k === "enter") { e.preventDefault(); save(); return; }
+  if (k === "[" ) return show(S.i - 1);
+  if (k === "]") return show(S.i + 1);
+  if (k === "\\") { const t = S.items.findIndex((x) => !S.labels[x.imageid]); if (t !== -1) show(t); return; }
+  if (k === "backspace") { e.preventDefault(); let c = S.cur - 1; while (c >= 0 && disabled(S.questions[c])) c--; if (c >= 0) { S.cur = c; render(); } return; }
+  const q = S.questions[S.cur]; if (!q) return;
+  const hit = keysFor(q).find(([key]) => key === k);
+  if (hit) { e.preventDefault(); answer(S.cur, hit[1]); }
+});
+$("prev").onclick = () => show(S.i - 1);
+$("next").onclick = () => show(S.i + 1);
+$("todo").onclick = () => { const t = S.items.findIndex((x) => !S.labels[x.imageid]); if (t !== -1) show(t); };
+$("save").onclick = save;
+load();
+</script>
+</body>
+</html>

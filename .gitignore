@@ -8,3 +8,5 @@ data/*.sqlite
 data/*.sqlite-*
 # Downloaded images stay local.
 data/images/
+# Local editor and preview settings
+.claude/

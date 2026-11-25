@@ -140,3 +140,51 @@ Metres driven per sol by northern-hemisphere season, from the route files alone:
   - 2 hard cases picked on purpose: the rover-deck frame (expect no ground) and a sideways view of an open hillside (expect a steep slope).
 - **Option-order check (probe only):** each request also asks the terrain question with its five options reversed. TypeSafe notes that a Choice can favour its first option, so a different top answer would show order sensitivity.
 - **Dry run:** requests build correctly, every asset is referenced, and the tests pass. Nothing has been downloaded or sent.
+
+## 2026-11-25: First Jev probe
+
+**Run:** `runs/20261125-132213/`, 22 frames, sent with the key in the gitignored `.env`.
+
+- **Model:** `jev-latest` resolved to **jev-1.14.0**. No errors.
+- **Speed and size:** 0.2–0.5 s per request, and about **3,740 input tokens** per 1200×902 frame (82,240 in total).
+- **Cost:** about $0.0035 for the probe at $0.042 per million input tokens. A full pass over the 682 terrain frames would be about 2.6M tokens, roughly $0.11.
+
+**Option order:** the top terrain choice was the same with the options reversed on **22 of 22** frames. No order effect is visible at this size.
+
+Jev's probabilities. Ground is the Noul for "natural ground fills most of the photo":
+
+| Frame | Ground | Top two terrain choices | Layers | Steep |
+|---|---|---|---|---|
+| `NLF_0280_0691801294_901E…` | 0.97 | sand_ripples 0.99 · loose_pebbles 0.01 | 0.14 | 0.17 |
+| `NLF_0237_0687990122_559E…` | 0.94 | loose_pebbles 0.75 · sand_ripples 0.21 | 0.10 | 0.05 |
+| `NLF_0381_0700768796_614E…` | 0.96 | sand_ripples 0.87 · loose_pebbles 0.11 | 0.16 | 0.07 |
+| `NLF_0401_0702530675_524E…` | 0.91 | loose_pebbles 0.64 · sand_ripples 0.25 | 0.18 | 0.06 |
+| `NLF_0416_0703860600_509E…` | 0.93 | sand_ripples 0.96 · loose_pebbles 0.04 | 0.11 | 0.08 |
+| `NLF_0456_0707428111_559E…` | 0.97 | loose_pebbles 1.00 · layered_outcrop 0.00 | 0.09 | 0.05 |
+| `NLF_0693_0728473453_598E…` | 0.92 | loose_pebbles 0.83 · sand_ripples 0.17 | 0.19 | 0.04 |
+| `NLF_0753_0733797169_475E…` | 0.96 | loose_pebbles 0.85 · scattered_boulders 0.13 | 0.14 | 0.05 |
+| `NLG_0838_0741346245_066E…` | 0.98 | sand_ripples 0.72 · scattered_boulders 0.26 | 0.58 | 0.06 |
+| `NLF_0954_0751630112_605E…` | 0.99 | scattered_boulders 0.52 · sand_ripples 0.41 | 0.95 | 0.06 |
+| `NLF_1134_0767609273_675E…` | 0.97 | sand_ripples 0.45 · scattered_boulders 0.27 | 0.19 | 0.07 |
+| `NLF_1047_0759890017_347E…` | 0.98 | loose_pebbles 0.60 · scattered_boulders 0.21 | 0.20 | 0.36 |
+| `NLF_1307_0782968067_425E…` | 0.97 | loose_pebbles 0.72 · sand_ripples 0.25 | 0.16 | 0.05 |
+| `NLF_1289_0781364817_177E…` | 0.98 | loose_pebbles 0.94 · sand_ripples 0.06 | 0.05 | 0.05 |
+| `NLG_1431_0793988126_012E…` | 0.98 | flat_bedrock 0.55 · loose_pebbles 0.43 | 0.11 | 0.05 |
+| `NLF_1542_0803832203_941E…` | 0.94 | flat_bedrock 0.50 · loose_pebbles 0.44 | 0.17 | 0.29 |
+| `NLF_1616_0810395276_223E…` | 0.91 | loose_pebbles 0.81 · flat_bedrock 0.10 | 0.20 | 0.07 |
+| `NLF_1707_0818483556_847E…` | 0.95 | loose_pebbles 0.62 · sand_ripples 0.37 | 0.11 | 0.06 |
+| `NLF_1918_0837211704_474E…` | 0.99 | flat_bedrock 0.98 · loose_pebbles 0.02 | 0.17 | 0.04 |
+| `NLF_2009_0845298532_239E…` | 0.97 | loose_pebbles 0.57 · scattered_boulders 0.38 | 0.18 | 0.13 |
+| `NLF_1815_0828058476_612E…` | 0.04 | loose_pebbles 0.76 · sand_ripples 0.14 | 0.08 | 0.06 |
+| `NLF_1761_0823274598_489E…` | 0.96 | loose_pebbles 0.87 · scattered_boulders 0.09 | 0.11 | 0.11 |
+
+**Hard cases:**
+- **Rover deck frame:** ground 0.04, so "no ground" and the other answers become n/a, as hoped.
+- **Sideways hillside frame:** steep 0.11, so "no", where I expected yes. At full size, though, the slope near the rover is moderate and the ridge is in the distance. My expectation wasn't clear-cut, so this isn't a clean test. A hard case needs an unambiguous answer before the run.
+
+**Spot check by Claude, not ground truth.** I looked at six frames at full size: `0280`, `0954`, `1134`, `1542`, `1761`, and the deck frame. The hand labels are the real check, and these frames are not in the label sample.
+- **Sand ripples, 0.99:** a clear dune field. This agrees.
+- **Scattered boulders 0.52, layers 0.95:** sand with many rocks, and one layered-looking rock at the edge. Plausible.
+- **Sand ripples 0.45:** mostly broken flat slabs over sand, with ripples only in the distance. I would have picked flat bedrock, so this looks like a miss.
+- **`steep_slope` is ambiguous.** In `1542` and `1761` a large hillside fills part of the frame, but Jev says no (0.29 and 0.11). The definition "the ground in view is a hillside…" doesn't say whether it means the ground near the rover or anything visible. A person could reasonably answer either way, so this is a wording problem, not a model problem. It should be settled before hand labelling starts, so that labels and Jev use the same meaning.
+- **Class balance:** `loose_pebbles` is the top choice for 11 of 22 frames. That may be true of the route or may be a default; the labels will tell.

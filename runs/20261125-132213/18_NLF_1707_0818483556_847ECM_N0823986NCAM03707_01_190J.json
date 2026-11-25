@@ -1,0 +1,125 @@
+{
+ "imageid": "NLF_1707_0818483556_847ECM_N0823986NCAM03707_01_190J",
+ "why": "random, tenth 9 of the route",
+ "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/01707/ids/edr/browse/ncam/NLF_1707_0818483556_847ECM_N0823986NCAM03707_01_190J01_1200.jpg",
+ "request": {
+  "model": "jev-latest",
+  "state": {
+   "photo": "d34433c0-f6ae-41c4-852d-a23d19449995-photo"
+  },
+  "questions": {
+   "ground_visible": {
+    "type": "noul",
+    "instructions": "Does natural ground (soil, sand or rock) fill most of `photo`?",
+    "criteria": {
+     "true": "Most of the picture is the Martian surface near the rover.",
+     "false": "Most of the picture is sky, the rover's own hardware, or deep shadow."
+    }
+   },
+   "main_terrain": {
+    "type": "choice",
+    "instructions": "Which kind of ground covers most of `photo`?",
+    "criteria": {
+     "layered_outcrop": "Exposed rock stands out of the ground and shows stacked layers or bands, like steps or a cut cake.",
+     "flat_bedrock": "Flat or gently tilted solid rock forms the surface, broken into slabs or plates.",
+     "scattered_boulders": "Large rocks, each clearly bigger than the stones around it, are spread across the ground.",
+     "loose_pebbles": "Soil covered with small loose stones and pebbles, with no large rocks or slabs.",
+     "sand_ripples": "Sand or dust covers most of the ground, shaped into ripples, drifts or smooth patches."
+    }
+   },
+   "layering": {
+    "type": "noul",
+    "instructions": "Does rock in `photo` show parallel lines or bands?",
+    "criteria": {
+     "true": "Somewhere in the picture, a rock face or slab shows clear parallel lines or bands.",
+     "false": "The rocks look solid or randomly broken, with no parallel lines or bands."
+    }
+   },
+   "steep_slope": {
+    "type": "noul",
+    "instructions": "Does the ground in `photo` rise or drop steeply?",
+    "criteria": {
+     "true": "The ground in view is a hillside, a crater wall or a steep bank.",
+     "false": "The ground in view is flat or gently rolling."
+    }
+   },
+   "main_terrain__reversed": {
+    "type": "choice",
+    "instructions": "Which kind of ground covers most of `photo`?",
+    "criteria": {
+     "sand_ripples": "Sand or dust covers most of the ground, shaped into ripples, drifts or smooth patches.",
+     "loose_pebbles": "Soil covered with small loose stones and pebbles, with no large rocks or slabs.",
+     "scattered_boulders": "Large rocks, each clearly bigger than the stones around it, are spread across the ground.",
+     "flat_bedrock": "Flat or gently tilted solid rock forms the surface, broken into slabs or plates.",
+     "layered_outcrop": "Exposed rock stands out of the ground and shows stacked layers or bands, like steps or a cut cake."
+    }
+   }
+  },
+  "assets": {
+   "d34433c0-f6ae-41c4-852d-a23d19449995-photo": {
+    "type": "image",
+    "format": "jpg",
+    "width": 1200,
+    "height": 902,
+    "bytes": 72898,
+    "sha256": "1df2e9a610823dedcd92b97820cdd1036493fcc58d4f06538d3b252ae739a69e"
+   }
+  }
+ },
+ "response": {
+  "model": "jev-1.14.0",
+  "answers": {
+   "ground_visible": {
+    "type": "noul",
+    "noul": 0.95
+   },
+   "main_terrain": {
+    "type": "choice",
+    "choice": "loose_pebbles",
+    "confidence": 0.52,
+    "probabilities": {
+     "layered_outcrop": 0.0,
+     "flat_bedrock": 0.0,
+     "scattered_boulders": 0.01,
+     "loose_pebbles": 0.62,
+     "sand_ripples": 0.37
+    }
+   },
+   "layering": {
+    "type": "noul",
+    "noul": 0.11
+   },
+   "steep_slope": {
+    "type": "noul",
+    "noul": 0.06
+   },
+   "main_terrain__reversed": {
+    "type": "choice",
+    "choice": "loose_pebbles",
+    "confidence": 0.51,
+    "probabilities": {
+     "sand_ripples": 0.39,
+     "loose_pebbles": 0.61,
+     "scattered_boulders": 0.0,
+     "flat_bedrock": 0.0,
+     "layered_outcrop": 0.0
+    }
+   }
+  },
+  "usage": {
+   "input_tokens": 3743,
+   "output_tokens": 213
+  }
+ },
+ "seconds": 0.2,
+ "labels": {
+  "ground_visible": "yes",
+  "main_terrain": "loose_pebbles",
+  "layering": "no",
+  "steep_slope": "no"
+ },
+ "order_check": {
+  "forward": "loose_pebbles",
+  "reversed": "loose_pebbles"
+ }
+}

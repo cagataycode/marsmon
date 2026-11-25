@@ -1,0 +1,10 @@
+.env
+__pycache__/
+.venv/
+.DS_Store
+# Raw metadata and the local database are rebuilt by the ingest scripts.
+data/raw/
+data/*.sqlite
+data/*.sqlite-*
+# Downloaded images stay local.
+data/images/

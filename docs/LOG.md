@@ -188,3 +188,12 @@ Jev's probabilities. Ground is the Noul for "natural ground fills most of the ph
 - **Sand ripples 0.45:** mostly broken flat slabs over sand, with ripples only in the distance. I would have picked flat bedrock, so this looks like a miss.
 - **`steep_slope` is ambiguous.** In `1542` and `1761` a large hillside fills part of the frame, but Jev says no (0.29 and 0.11). The definition "the ground in view is a hillside…" doesn't say whether it means the ground near the rover or anything visible. A person could reasonably answer either way, so this is a wording problem, not a model problem. It should be settled before hand labelling starts, so that labels and Jev use the same meaning.
 - **Class balance:** `loose_pebbles` is the top choice for 11 of 22 frames. That may be true of the route or may be a default; the labels will tell.
+
+## 2026-11-25: `steep_slope` reworded (terrain-v2)
+
+- **Change:** the question is now "Does `photo` show a hillside, crater wall or steep bank?"
+  - Yes: "…fills a clear part of the picture, near or far."
+  - No: "All ground in view is flat or gently rolling."
+- **Why:** v1 said "the ground in view", which a person could read as either the ground next to the rover or anything visible. v2 picks "anything visible". The aim was to make the definition clear for a person, not to change any particular answer.
+- **Timing:** changed before any hand label was given (0 of 150), so all hand labels will use v2.
+- **Effect on the first probe:** `runs/20261125-132213` used v1, as its request logs show. Its `steep_slope` answers are not comparable with v2 labels. The two frames that exposed the ambiguity (`1542`, `1761`) helped shape this change, so they can't serve as an independent test of the new wording.

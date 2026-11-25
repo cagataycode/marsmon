@@ -11,7 +11,7 @@ Rules for editing (see docs/CONCEPT.md):
 - bump VERSION on any change, so labels and answers record which wording they used.
 """
 
-VERSION = "terrain-v1"
+VERSION = "terrain-v2"  # v2: steep_slope means a hillside anywhere in view (25 Nov 2026)
 
 TERRAIN = [
     {
@@ -41,11 +41,13 @@ TERRAIN = [
         "false": "The rocks look solid or randomly broken, with no parallel lines or bands.",
     },
     {
+        # v2: v1 asked whether "the ground in view" was steep, which left open whether that meant
+        # the ground next to the rover or anything visible. v2 means anything visible, near or far.
         "id": "steep_slope",
         "kind": "noul",
-        "text": "Does the ground in `photo` rise or drop steeply?",
-        "true": "The ground in view is a hillside, a crater wall or a steep bank.",
-        "false": "The ground in view is flat or gently rolling.",
+        "text": "Does `photo` show a hillside, crater wall or steep bank?",
+        "true": "A hillside, crater wall or steep bank fills a clear part of the picture, near or far.",
+        "false": "All ground in view is flat or gently rolling.",
     },
 ]
 

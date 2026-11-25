@@ -83,7 +83,7 @@ All wording lives in one file (`questions.py`). Each question asks for one judgm
 - Noul `ground_visible`: "Is the ground visible in `photo`?" (handles the case where nothing fits)
 - Choice `main_terrain`: `layered_outcrop`, `sand_ripples`, `scattered_boulders`, `flat_bedrock`, `loose_pebbles`. Each option is described as a situation.
 - Noul `layering`: "Does `photo` show rock in visible layers or bands?"
-- Noul `steep_slope`: "Is the rover looking at or standing on a steep slope in `photo`?"
+- Noul `steep_slope`: "Does `photo` show a hillside, crater wall or steep bank?" (near or far; current wording lives in `marsmon/questions.py`)
 
 **Experiment (Q5), horizon strips only:**
 - Noul `far_rim_in_view`: "Is a distant ridge visible behind the nearby ground in `photo`?" Code only asks about haze when this is a clear yes.

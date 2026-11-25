@@ -69,7 +69,7 @@ def select(rover: str) -> list[dict]:
 
 def write_csv(rows, path: Path):
     with path.open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=FIELDS)
+        w = csv.DictWriter(f, fieldnames=FIELDS, lineterminator="\n")
         w.writeheader()
         w.writerows(rows)
 

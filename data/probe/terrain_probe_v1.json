@@ -1,0 +1,139 @@
+{
+ "seed": 20261126,
+ "questions_version": "terrain-v1",
+ "excludes": "every frame in data/labels/terrain_sample.json",
+ "items": [
+  {
+   "imageid": "NLF_0280_0691801294_901ECM_N0080256NCAM03280_01_195J",
+   "sol": 280,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00280/ids/edr/browse/ncam/NLF_0280_0691801294_901ECM_N0080256NCAM03280_01_195J01_1200.jpg",
+   "why": "random, tenth 1 of the route"
+  },
+  {
+   "imageid": "NLF_0237_0687990122_559ECM_N0072246NCAM03237_07_195J",
+   "sol": 237,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00237/ids/edr/browse/ncam/NLF_0237_0687990122_559ECM_N0072246NCAM03237_07_195J01_1200.jpg",
+   "why": "random, tenth 1 of the route"
+  },
+  {
+   "imageid": "NLF_0381_0700768796_614ECM_N0120000NCAM03381_01_195J",
+   "sol": 381,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00381/ids/edr/browse/ncam/NLF_0381_0700768796_614ECM_N0120000NCAM03381_01_195J01_1200.jpg",
+   "why": "random, tenth 2 of the route"
+  },
+  {
+   "imageid": "NLF_0401_0702530675_524ECM_N0191126NCAM12400_01_195J",
+   "sol": 401,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00401/ids/edr/browse/ncam/NLF_0401_0702530675_524ECM_N0191126NCAM12400_01_195J02_1200.jpg",
+   "why": "random, tenth 2 of the route"
+  },
+  {
+   "imageid": "NLF_0416_0703860600_509ECM_N0230824NCAM14415_01_195J",
+   "sol": 416,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00416/ids/edr/browse/ncam/NLF_0416_0703860600_509ECM_N0230824NCAM14415_01_195J01_1200.jpg",
+   "why": "random, tenth 3 of the route"
+  },
+  {
+   "imageid": "NLF_0456_0707428111_559ECM_N0260160NCAM00301_12_095J",
+   "sol": 456,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00456/ids/edr/browse/ncam/NLF_0456_0707428111_559ECM_N0260160NCAM00301_12_095J01_1200.jpg",
+   "why": "random, tenth 3 of the route"
+  },
+  {
+   "imageid": "NLF_0693_0728473453_598ECM_N0321394NCAM03693_10_195J",
+   "sol": 693,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00693/ids/edr/browse/ncam/NLF_0693_0728473453_598ECM_N0321394NCAM03693_10_195J01_1200.jpg",
+   "why": "random, tenth 4 of the route"
+  },
+  {
+   "imageid": "NLF_0753_0733797169_475ECM_N0371798NCAM02753_01_195J",
+   "sol": 753,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00753/ids/edr/browse/ncam/NLF_0753_0733797169_475ECM_N0371798NCAM02753_01_195J01_1200.jpg",
+   "why": "random, tenth 4 of the route"
+  },
+  {
+   "imageid": "NLG_0838_0741346245_066ECM_N0401608SCAM03838_00_1LLJ",
+   "sol": 838,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00838/ids/edr/browse/ncam/NLG_0838_0741346245_066ECM_N0401608SCAM03838_00_1LLJ01_1200.jpg",
+   "why": "random, tenth 5 of the route"
+  },
+  {
+   "imageid": "NLF_0954_0751630112_605EBY_N0463032SCAM03954_00_0LLJ",
+   "sol": 954,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00954/ids/edr/browse/ncam/NLF_0954_0751630112_605EBY_N0463032SCAM03954_00_0LLJ01_1200.jpg",
+   "why": "random, tenth 5 of the route"
+  },
+  {
+   "imageid": "NLF_1134_0767609273_675ECM_N0520350NCAM00301_01_295J",
+   "sol": 1134,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/01134/ids/edr/browse/ncam/NLF_1134_0767609273_675ECM_N0520350NCAM00301_01_295J01_1200.jpg",
+   "why": "random, tenth 6 of the route"
+  },
+  {
+   "imageid": "NLF_1047_0759890017_347ECM_N0500000NCAM03047_01_195J",
+   "sol": 1047,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/01047/ids/edr/browse/ncam/NLF_1047_0759890017_347ECM_N0500000NCAM03047_01_195J01_1200.jpg",
+   "why": "random, tenth 6 of the route"
+  },
+  {
+   "imageid": "NLF_1307_0782968067_425ECM_N0611516NCAM00301_01_295J",
+   "sol": 1307,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/01307/ids/edr/browse/ncam/NLF_1307_0782968067_425ECM_N0611516NCAM00301_01_295J01_1200.jpg",
+   "why": "random, tenth 7 of the route"
+  },
+  {
+   "imageid": "NLF_1289_0781364817_177EBY_N0602250SCAM01289_00_0LLJ",
+   "sol": 1289,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/01289/ids/edr/browse/ncam/NLF_1289_0781364817_177EBY_N0602250SCAM01289_00_0LLJ01_1200.jpg",
+   "why": "random, tenth 7 of the route"
+  },
+  {
+   "imageid": "NLG_1431_0793988126_012ECM_N0692000SCAM03431_00_1LLJ",
+   "sol": 1431,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/01431/ids/edr/browse/ncam/NLG_1431_0793988126_012ECM_N0692000SCAM03431_00_1LLJ01_1200.jpg",
+   "why": "random, tenth 8 of the route"
+  },
+  {
+   "imageid": "NLF_1542_0803832203_941ECM_N0760000NCAM03542_01_195J",
+   "sol": 1542,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/01542/ids/edr/browse/ncam/NLF_1542_0803832203_941ECM_N0760000NCAM03542_01_195J01_1200.jpg",
+   "why": "random, tenth 8 of the route"
+  },
+  {
+   "imageid": "NLF_1616_0810395276_223ECM_N0790198NCAM14615_01_195J",
+   "sol": 1616,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/01616/ids/edr/browse/ncam/NLF_1616_0810395276_223ECM_N0790198NCAM14615_01_195J01_1200.jpg",
+   "why": "random, tenth 9 of the route"
+  },
+  {
+   "imageid": "NLF_1707_0818483556_847ECM_N0823986NCAM03707_01_190J",
+   "sol": 1707,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/01707/ids/edr/browse/ncam/NLF_1707_0818483556_847ECM_N0823986NCAM03707_01_190J01_1200.jpg",
+   "why": "random, tenth 9 of the route"
+  },
+  {
+   "imageid": "NLF_1918_0837211704_474EBY_N0893644SCAM01918_00_0LLJ",
+   "sol": 1918,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/01918/ids/edr/browse/ncam/NLF_1918_0837211704_474EBY_N0893644SCAM01918_00_0LLJ01_1200.jpg",
+   "why": "random, tenth 10 of the route"
+  },
+  {
+   "imageid": "NLF_2009_0845298532_239ECM_N0911542NCAM00301_01_295J",
+   "sol": 2009,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/02009/ids/edr/browse/ncam/NLF_2009_0845298532_239ECM_N0911542NCAM00301_01_295J01_1200.jpg",
+   "why": "random, tenth 10 of the route"
+  },
+  {
+   "imageid": "NLF_1815_0828058476_612ECM_N0871640NCAM02814_07_195J",
+   "sol": 1815,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/01815/ids/edr/browse/ncam/NLF_1815_0828058476_612ECM_N0871640NCAM02814_07_195J01_1200.jpg",
+   "why": "hard case: rover deck fills the frame: ground_visible should be no"
+  },
+  {
+   "imageid": "NLF_1761_0823274598_489ECM_N0831384NCAM03761_01_195J",
+   "sol": 1761,
+   "image_url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/01761/ids/edr/browse/ncam/NLF_1761_0823274598_489ECM_N0831384NCAM03761_01_195J01_1200.jpg",
+   "why": "hard case: open hillside seen looking sideways: steep_slope should be yes"
+  }
+ ]
+}

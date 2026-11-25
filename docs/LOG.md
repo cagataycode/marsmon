@@ -122,3 +122,21 @@ Metres driven per sol by northern-hemisphere season, from the route files alone:
   - Covers MY36: 47, MY37: 56, MY38: 45, MY39: 2.
   - Every northern season has 30–41 frames. Elevation runs from −2,585 m to −1,811 m, sols 14–2023.
 - **Labelling starts now.** Nothing has been sent to Jev.
+
+## 2026-11-25: Jev probe prepared (not sent)
+
+- **Request format,** from TypeSafe's image and HTTP API docs:
+  - The image goes in a top-level `assets` map as base64 JPEG, under a random reference string, and the state holds `{"photo": <ref>}`.
+  - Every request needs the header `TypeSafe-Danger-Zone-Images: true`.
+  - Images must be 280–1568 px per side. They are rejected, never resized. NASA's 1200×902 browse JPEGs fit.
+- **The client,** `marsmon/jev.py`:
+  - Builds the four questions from `marsmon/questions.py`, so the wording is the same as on the labelling page.
+  - Checks the image size before sending.
+  - Raises an error on a failed call instead of treating it as an answer.
+  - Converts probabilities into the hand-label vocabulary: above 0.7 is yes, below 0.3 is no, in between is unsure. When there's no ground, the other questions become n/a.
+- **What gets logged:** the request with the image replaced by its size and SHA-256, so anyone can re-download the frame from NASA and check it's the same file. Plus the full response and token usage.
+- **Probe frames:** `data/probe/terrain_probe_v1.json`, 22 frames that are not in the label sample.
+  - 20 random frames, 2 from each tenth of the route (seed 20261126).
+  - 2 hard cases picked on purpose: the rover-deck frame (expect no ground) and a sideways view of an open hillside (expect a steep slope).
+- **Option-order check (probe only):** each request also asks the terrain question with its five options reversed. TypeSafe notes that a Choice can favour its first option, so a different top answer would show order sensitivity.
+- **Dry run:** requests build correctly, every asset is referenced, and the tests pass. Nothing has been downloaded or sent.

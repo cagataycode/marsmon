@@ -2,7 +2,7 @@
 
 **MarsMon is a field report on the Mars rovers, built from NASA's public raw images.** The report covers what the rover did each sol, what ground it crossed, and the season on Mars. A small vision model (TypeSafe's Jev) answers typed questions about the pictures. Plain code does every number and decision. An LLM (Claude) writes a short weekly report from those computed tables.
 
-> **Status: early build (Nov 2026).** The data feeds are checked and the route and image metadata ingest works. Nothing has been sent to Jev yet. Every step so far, including dead ends and null results, is in [`docs/LOG.md`](docs/LOG.md).
+> **Status: early build (Nov 2026).** The data feeds are checked, terrain frames are picked for 682 of 708 Perseverance stops, a 150-frame hand-label sample is drawn, and a 22-frame Jev probe is prepared. Nothing has been sent to Jev yet. Every step so far, including dead ends and null results, is in [`docs/LOG.md`](docs/LOG.md).
 
 ## Why Mars rovers
 
@@ -38,6 +38,8 @@ python3 -m marsmon.ingest images --rover m20 --camera NAVCAM_LEFT   # about one 
 python3 -m marsmon.select_terrain --rover m20                # one terrain frame per stop
 python3 -m marsmon.label_sample --rover m20 --n 150          # frames to label by hand (once)
 python3 -m marsmon.label_server                              # labelling page at http://127.0.0.1:8765
+python3 -m marsmon.probe dry-run                             # build the Jev probe requests, send nothing
+python3 -m marsmon.probe send                                # needs TYPESAFE_API_KEY in .env
 python3 -m unittest discover tests
 ```
 

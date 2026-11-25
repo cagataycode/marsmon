@@ -104,3 +104,21 @@ Metres driven per sol by northern-hemisphere season, from the route files alone:
 - **Testing on a 20-frame scratch sample found two problems:**
   - **Fast typing landed on the wrong frame.** Keys pressed while a save was in flight went to the previous frame. The page now moves on at once and goes back with an error if the save fails.
   - **One picked frame showed the rover's deck, not the ground.** Frame `NLF_1815_0828058476_612ECM_N0871640NCAM02814_07_195J`, mast azimuth −122°, elevation −25°. The picker now avoids frames aimed more than 100° off the rover's forward direction when another frame exists at that stop. Another frame at +118° showed open hillside, so azimuth alone isn't a clean rule. The `ground_visible` labels will show how often deck frames still slip through.
+
+## 2026-11-25: Complete Navcam metadata, terrain frames and the label sample
+
+- **Running three pulls in parallel got us refused.** I split the remaining sols (0–595) into three ranges and pulled them at once. NASA's feed then answered HTTP 403 for a few minutes, and all three pulls stopped. After that:
+  - The reader now waits about one second between requests and runs one pull at a time.
+  - On 403 or 429 it stops with a clear message instead of retrying.
+  - Ranges are only for resuming, not for parallel pulls.
+- **Counts were checked against the feed:** stored counts compared with the feed's own total for every 200-sol range.
+  - The interrupted ranges were short by 2, 86 and 91 records. The cause is likely the feed's paging: results are only ordered by sol, so pages can shift between requests.
+  - Re-pulling sols 0–599 one range at a time fixed it. **64,795 of 64,795** left-Navcam records are stored, and every 200-sol range matches.
+- **Terrain frames:** 682 of 708 route stops have a frame, including 553 of the 554 end-of-drive stops. 10 picked frames are still aimed more than 100° off forward, because no other frame existed at those stops.
+  - Frames per tenth of the route: 99, 26, 82, 60, 61, 80, 86, 56, 54, 78.
+  - The second tenth is thin because the rover drove long distances with few stops there.
+  - Table: `data/derived/m20_terrain_frames.csv`. Thumbnails: `data/derived/m20_terrain_review.html`, which loads images from NASA.
+- **Label sample:** 150 frames, 15 from each tenth, seed 20261125, in `data/labels/terrain_sample.json`.
+  - Covers MY36: 47, MY37: 56, MY38: 45, MY39: 2.
+  - Every northern season has 30–41 frames. Elevation runs from −2,585 m to −1,811 m, sols 14–2023.
+- **Labelling starts now.** Nothing has been sent to Jev.

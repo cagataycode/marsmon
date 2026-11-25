@@ -6,6 +6,7 @@ listed in one place. Requests are paced so the feeds are not hammered.
 """
 import json
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -14,7 +15,11 @@ MSL_IMAGES = "https://mars.nasa.gov/api/v1/raw_image_items/"
 WAYPOINTS = "https://mars.nasa.gov/mmgis-maps/{code}/Layers/json/{code}_waypoints.json"
 ROUTE_CODES = {"m20": "M20", "msl": "MSL"}
 PAGE_SIZE = 100  # the Perseverance feed caps pages at 100
-PAUSE_S = 0.25
+PAUSE_S = 1.0    # one request at a time, about one per second: three parallel pulls got HTTP 403
+
+
+class Refused(RuntimeError):
+    """The server refused us (HTTP 403/429): stop and try again later instead of retrying."""
 
 
 def get_json(url: str, retries: int = 4):
@@ -22,10 +27,16 @@ def get_json(url: str, retries: int = 4):
         try:
             with urllib.request.urlopen(url, timeout=60) as r:
                 return json.load(r)
+        except urllib.error.HTTPError as e:
+            if e.code in (403, 429):
+                raise Refused(f"HTTP {e.code} from {url.split('?')[0]}: pausing is needed; resume later with --before-sol") from e
+            if attempt == retries - 1:
+                raise
+            time.sleep(5 * (attempt + 1))
         except Exception:
             if attempt == retries - 1:
                 raise
-            time.sleep(2 * (attempt + 1))
+            time.sleep(5 * (attempt + 1))
 
 
 def m20_url(page: int, camera: str | None = None, sol_min: int | None = None, sol_max: int | None = None) -> str:

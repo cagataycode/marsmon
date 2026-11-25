@@ -34,7 +34,7 @@ Python 3.10+ and the standard library only.
 
 ```bash
 python3 -m marsmon.ingest route --rover m20                 # route stops (also: --rover msl)
-python3 -m marsmon.ingest images --rover m20 --camera NAVCAM_LEFT
+python3 -m marsmon.ingest images --rover m20 --camera NAVCAM_LEFT   # about one request per second; run one pull at a time
 python3 -m marsmon.select_terrain --rover m20                # one terrain frame per stop
 python3 -m marsmon.label_sample --rover m20 --n 150          # frames to label by hand (once)
 python3 -m marsmon.label_server                              # labelling page at http://127.0.0.1:8765
